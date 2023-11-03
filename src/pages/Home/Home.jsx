@@ -5,12 +5,17 @@ export const Home = () => {
     <>
       <div>
         <h1>Klientų registravimo sistema</h1>
-        <p>
-          Norint užregistruoti klientą jo grožio procedūroms, pirmiausia
-          prisijunkite arba užsiregistruokite
-        </p>
-        <NavLink to="/register">Register</NavLink>
-        <NavLink to="/login">Login</NavLink>
+        {!localStorage.getItem("user") && (
+          <>
+            {" "}
+            <p>
+              Norint užregistruoti klientą jo grožio procedūroms, pirmiausia
+              prisijunkite arba užsiregistruokite
+            </p>
+            <NavLink to="/register">Register</NavLink>
+            <NavLink to="/login">Login</NavLink>
+          </>
+        )}
       </div>
     </>
   );

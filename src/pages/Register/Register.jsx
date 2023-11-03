@@ -31,6 +31,7 @@ export const Register = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
+        window.location.href = "http://localhost:3000/";
       } else {
         console.error("Registration failed");
       }

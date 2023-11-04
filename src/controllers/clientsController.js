@@ -10,8 +10,11 @@ router.post("/registerAppointment", async (req, res) => {
     const clientName = req.body.firstName;
     const clientLastName = req.body.lastName;
     const clientEmail = req.body.clientEmail;
-    const appointmentDate = req.body.date;
+    const appointmentDate = new Date(req.body.date);
     const appointmentService = req.body.service;
+    const utcPlus2Date = new Date(
+      appointmentDate.getTime() + 2 * 60 * 60 * 1000
+    );
 
     let client = await Client.findOne({ clientEmail: clientEmail });
 
@@ -24,7 +27,7 @@ router.post("/registerAppointment", async (req, res) => {
     }
 
     const newAppointment = {
-      date: appointmentDate,
+      date: utcPlus2Date,
       service: appointmentService,
     };
     client.appointments.push(newAppointment);

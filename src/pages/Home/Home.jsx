@@ -1,14 +1,23 @@
 import { NavLink } from "react-router-dom";
 import { Form } from "../../components/Form/Form";
 import { Input } from "../../components/Input/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { subDays, addDays, setHours, setMinutes } from "date-fns";
 import { Button } from "../../components/Button/Button";
 import Select from "react-select";
+import { Modal } from "../../components/Modal/Modal";
 
 export const Home = () => {
+  // modal TODO
+  const [currentModal, setCurrentModal] = useState(null);
+
+  const handleClose = () => {
+    setCurrentModal(null);
+  };
+
+  // form
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -72,7 +81,9 @@ export const Home = () => {
         console.log(data);
         window.location.href = "http://localhost:3000/";
       } else {
-        console.error("Registration failed");
+        alert(
+          "Registracija nepavyko, įvesti netinkami vardas/pavardė prie kliento"
+        );
       }
     } catch (error) {
       console.error(error);
@@ -84,6 +95,93 @@ export const Home = () => {
     { value: "Manikiūras", label: "Manikiūras" },
     { value: "Barzdos tvarkymas", label: "Barzdos tvarkymas" },
   ];
+
+  // -------------------------------------------------------------------
+  // fetch all appointments
+  // -------------------------------------------------------------------
+  const [fetchedAppointments, setFetchedAppointments] = useState([]);
+
+  const fetchAppointments = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/clients/getClients"
+      );
+      if (response.ok && localStorage.getItem("user")) {
+        const data = await response.json();
+        setFetchedAppointments(data);
+      } else {
+        alert("Nepavyko gauti duomenu");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Nepavyko gauti duomenu");
+    }
+  };
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
+  // -------------------------------------------------------------------
+  // edit and delete appointments
+  // -------------------------------------------------------------------
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [editedDate, setEditedDate] = useState(formData.date);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+  const handleEditAppointment = (appointmentId) => {
+    setIsDatePickerVisible(!isDatePickerVisible);
+    setSelectedAppointment(appointmentId);
+  };
+
+  const applyEditAppointment = async (clientId, appointmentId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/clients/updateAppointment/${clientId}/${appointmentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "updateDate", date: editedDate }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        fetchAppointments();
+        setIsDatePickerVisible(false);
+      } else {
+        console.error("Edit failed");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteAppointment = async (clientId, appointmentId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/clients/updateAppointment/${clientId}/${appointmentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "delete" }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        fetchAppointments();
+      } else {
+        console.error("Deletion failed");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div>
@@ -138,6 +236,7 @@ export const Home = () => {
             <DatePicker
               selected={formData.date}
               onChange={handleDateChange}
+              inline
               placeholderText="Pasirinkite datą..."
               name="date"
               showTimeSelect
@@ -154,6 +253,119 @@ export const Home = () => {
             />
             <Button buttonText="Užregistruoti klientą" type="submit" />
           </Form>
+        </div>
+      )}
+      {localStorage.getItem("user") && (
+        <div>
+          <p>Esamos registracijos</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Appointment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fetchedAppointments
+                .filter((client) => client.appointments.length > 0)
+                .map((client, index) => (
+                  <tr key={index}>
+                    <td>{client.firstName}</td>
+                    <td>{client.lastName}</td>
+                    <td>{client.clientEmail}</td>
+                    <td>
+                      {client.appointments.map((appointment) => (
+                        <div key={appointment._id} className="appointment-info">
+                          <span>{appointment.service}</span>
+                          <span>
+                            {" "}
+                            {new Date(appointment.date).toLocaleTimeString(
+                              "lt-LT",
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
+                          </span>
+                          <span>
+                            <Button
+                              buttonText="Redaguoti"
+                              onClick={() =>
+                                handleEditAppointment(appointment._id)
+                              }
+                            />
+                          </span>
+                          <span>
+                            <Button
+                              buttonText="Ištrinti"
+                              onClick={() =>
+                                handleDeleteAppointment(
+                                  client._id,
+                                  appointment._id
+                                )
+                              }
+                            />
+                          </span>
+                          {selectedAppointment === appointment._id &&
+                            isDatePickerVisible && (
+                              <div className="editModal">
+                                <DatePicker
+                                  selected={editedDate}
+                                  onChange={setEditedDate}
+                                  inline
+                                  placeholderText="Pasirinkite datą..."
+                                  name="date"
+                                  showTimeSelect
+                                  timeFormat="HH:mm"
+                                  timeIntervals={30}
+                                  timeCaption="time"
+                                  dateFormat="MMMM d, yyyy HH:mm"
+                                  includeDateIntervals={[
+                                    {
+                                      start: subDays(new Date(), 1),
+                                      end: addDays(new Date(), 60),
+                                    },
+                                  ]}
+                                  minTime={setHours(
+                                    setMinutes(new Date(), 0),
+                                    9
+                                  )}
+                                  maxTime={setHours(
+                                    setMinutes(new Date(), 30),
+                                    20
+                                  )}
+                                  filterTime={filterPassedTime}
+                                />
+                                <Button
+                                  buttonText="Patvirtinti"
+                                  onClick={() =>
+                                    applyEditAppointment(
+                                      client._id,
+                                      appointment._id
+                                    )
+                                  }
+                                />
+                                <Button
+                                  buttonText="Atšaukti"
+                                  onClick={() =>
+                                    handleEditAppointment(appointment._id)
+                                  }
+                                />
+                              </div>
+                            )}
+                        </div>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+          {/* TODO */}
+          {!!currentModal && (
+            <Modal onClose={handleClose}>{currentModal}</Modal>
+          )}
         </div>
       )}
     </>

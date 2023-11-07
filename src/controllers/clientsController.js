@@ -25,18 +25,21 @@ router.post("/registerAppointment", async (req, res) => {
         clientEmail: clientEmail,
       });
     }
+    if (client.firstName === clientName && client.lastName === clientLastName) {
+      const newAppointment = {
+        date: utcPlus2Date,
+        service: appointmentService,
+      };
+      client.appointments.push(newAppointment);
 
-    const newAppointment = {
-      date: utcPlus2Date,
-      service: appointmentService,
-    };
-    client.appointments.push(newAppointment);
+      await client.save();
 
-    await client.save();
-
-    res
-      .status(201)
-      .send({ message: "Client appointment was successfully registered." });
+      res
+        .status(201)
+        .send({ message: "Client appointment was successfully registered." });
+    } else {
+      res.status(400).send({ message: "Name and/or surname is not correct" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send(error);

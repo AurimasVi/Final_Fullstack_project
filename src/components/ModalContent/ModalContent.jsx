@@ -1,9 +1,9 @@
 import { Button } from "../Button/Button";
 
-export const ModalContent = ({ onCancel, onConfirm }) => {
+export const ModalContent = ({ onCancel, onConfirm, children }) => {
   return (
     <div>
-      <p>Ar tikrai norite ištrinti šį kliento vizitą?</p>
+      {children}
       <Button onClick={onConfirm} buttonText="Patvirtinti" />
       <Button onClick={onCancel} buttonText="Atšaukti" />
     </div>

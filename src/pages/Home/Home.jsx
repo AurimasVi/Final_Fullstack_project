@@ -120,8 +120,8 @@ export const Home = () => {
   // -------------------------------------------------------------------
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [editedDate, setEditedDate] = useState(formData.date);
+
   const [selectedAppointment, setSelectedAppointment] = useState(null);
-  // modal TODO
   const [showModal, setShowModal] = useState(null);
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
@@ -290,10 +290,12 @@ export const Home = () => {
                         <div key={appointment._id} className="appointment-info">
                           <span>{appointment.service}</span>
                           <span>
-                            {" "}
-                            {new Date(appointment.date).toLocaleTimeString(
+                            {new Date(appointment.date).toLocaleString(
                               "lt-LT",
                               {
+                                year: "numeric",
+                                month: "numeric",
+                                day: "numeric",
                                 hour: "2-digit",
                                 minute: "2-digit",
                               }
@@ -317,13 +319,17 @@ export const Home = () => {
                                 )
                               }
                             />
-                            {/* MODALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLllllllllllllllllll */}
+                            {/* DELETEEEEE MODALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL */}
                             {showModal && (
                               <Modal onClose={handleCloseModal}>
                                 <ModalContent
                                   onCancel={handleCloseModal}
                                   onConfirm={confirmDelete}
-                                />
+                                >
+                                  <p>
+                                    Ar tikrai norite ištrinti šį kliento vizitą?
+                                  </p>
+                                </ModalContent>
                               </Modal>
                             )}
                           </span>
@@ -381,7 +387,6 @@ export const Home = () => {
                 ))}
             </tbody>
           </table>
-          {/* TODO MODAL*/}
         </div>
       )}
     </>

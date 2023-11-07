@@ -8,15 +8,9 @@ import { subDays, addDays, setHours, setMinutes } from "date-fns";
 import { Button } from "../../components/Button/Button";
 import Select from "react-select";
 import { Modal } from "../../components/Modal/Modal";
+import { ModalContent } from "../../components/ModalContent/ModalContent";
 
 export const Home = () => {
-  // modal TODO
-  const [currentModal, setCurrentModal] = useState(null);
-
-  const handleClose = () => {
-    setCurrentModal(null);
-  };
-
   // form
   const [formData, setFormData] = useState({
     firstName: "",
@@ -127,6 +121,46 @@ export const Home = () => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [editedDate, setEditedDate] = useState(formData.date);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  // modal TODO
+  const [showModal, setShowModal] = useState(null);
+  const [selectedClientId, setSelectedClientId] = useState(null);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+
+  const handleCloseModal = () => {
+    setShowModal(null);
+  };
+
+  const handleDeleteAppointment = (clientId, appointmentId) => {
+    setSelectedClientId(clientId);
+    setSelectedAppointmentId(appointmentId);
+    setShowModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/clients/updateAppointment/${selectedClientId}/${selectedAppointmentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "delete" }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        fetchAppointments();
+      } else {
+        console.error("Deletion failed");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    setShowModal(false);
+  };
 
   const handleEditAppointment = (appointmentId) => {
     setIsDatePickerVisible(!isDatePickerVisible);
@@ -152,30 +186,6 @@ export const Home = () => {
         setIsDatePickerVisible(false);
       } else {
         console.error("Edit failed");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleDeleteAppointment = async (clientId, appointmentId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/clients/updateAppointment/${clientId}/${appointmentId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ action: "delete" }),
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        fetchAppointments();
-      } else {
-        console.error("Deletion failed");
       }
     } catch (error) {
       console.error(error);
@@ -307,6 +317,15 @@ export const Home = () => {
                                 )
                               }
                             />
+                            {/* MODALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLllllllllllllllllll */}
+                            {showModal && (
+                              <Modal onClose={handleCloseModal}>
+                                <ModalContent
+                                  onCancel={handleCloseModal}
+                                  onConfirm={confirmDelete}
+                                />
+                              </Modal>
+                            )}
                           </span>
                           {selectedAppointment === appointment._id &&
                             isDatePickerVisible && (
@@ -362,10 +381,7 @@ export const Home = () => {
                 ))}
             </tbody>
           </table>
-          {/* TODO */}
-          {!!currentModal && (
-            <Modal onClose={handleClose}>{currentModal}</Modal>
-          )}
+          {/* TODO MODAL*/}
         </div>
       )}
     </>

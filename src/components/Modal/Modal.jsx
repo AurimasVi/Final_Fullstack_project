@@ -1,17 +1,12 @@
-import { Button } from "../Button/Button";
 import styles from "./Modal.module.css";
 import React from "react";
 import ReactDOM from "react-dom";
 
-export const Modal = ({ children, buttonText, onClick, onClose }) => {
+export const Modal = ({ children }) => {
   return ReactDOM.createPortal(
     <>
       <div className={styles.overlay}></div>
-      <div className={styles.modal}>
-        {children}
-        <Button buttonText="Patvirtinti" onClick={onClick} />
-        <Button buttonText="Atšaukti" onClick={() => onClose()} />
-      </div>
+      <div className={styles.modal}>{children}</div>
     </>,
     document.getElementById("portal")
   );

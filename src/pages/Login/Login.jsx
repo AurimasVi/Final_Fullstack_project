@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "../../components/Button/Button";
 import { Form } from "../../components/Form/Form";
 import { Input } from "../../components/Input/Input";
+import style from "./login.module.css";
 
 export const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -18,7 +19,6 @@ export const Login = () => {
 
   const handleLogin = (user) => {
     localStorage.setItem("user", user._id);
-    console.log(JSON.stringify(user._id));
   };
 
   const handleSubmit = async (e) => {
@@ -35,36 +35,42 @@ export const Login = () => {
         const data = await response.json();
         handleLogin(data);
         window.location.href = "http://localhost:3000/";
-        console.log("LOGGED IN");
       } else {
-        console.error("Login failed");
+        alert("Prisijungti nepavyko");
       }
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
 
   return (
-    <div className="loginWrapper">
-      <Form onSubmit={handleSubmit}>
-        <Input
-          type="email"
-          inputName="email"
-          placeHolder="El. Paštas"
-          className="emailInput"
-          value={loginData.email}
-          onChange={handleChange}
-        />
-        <Input
-          type="password"
-          inputName="password"
-          placeHolder="Slaptažodis"
-          className="passwordInput"
-          value={loginData.password}
-          onChange={handleChange}
-        />
-        <Button buttonText="Prisijungti" type="submit" />
-      </Form>
+    <div className={style.loginPageWrapper}>
+      <div className={style.loginFormWrapper}>
+        <Form onSubmit={handleSubmit} className={style.formElement}>
+          <h2 className={style.h2Text}>PRISIJUNGTI</h2>
+          <Input
+            type="email"
+            inputName="email"
+            placeHolder="El. Paštas"
+            className={style.loginEmailInput}
+            value={loginData.email}
+            onChange={handleChange}
+          />
+          <Input
+            type="password"
+            inputName="password"
+            placeHolder="Slaptažodis"
+            className={style.passwordInput}
+            value={loginData.password}
+            onChange={handleChange}
+          />
+          <Button
+            buttonText="PRISIJUNGTI"
+            type="submit"
+            className={style.loginBtn}
+          />
+        </Form>
+      </div>
     </div>
   );
 };

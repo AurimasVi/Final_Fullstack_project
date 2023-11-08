@@ -1,11 +1,28 @@
 import { Button } from "../Button/Button";
 
-export const ModalContent = ({ onCancel, onConfirm, children }) => {
+export const ModalContent = ({
+  onCancel,
+  onConfirm,
+  children,
+  acceptBtnClass,
+  cancelBtnClass,
+  modalBtnWrapperClass,
+}) => {
   return (
     <div>
       {children}
-      <Button onClick={onConfirm} buttonText="Patvirtinti" />
-      <Button onClick={onCancel} buttonText="Atšaukti" />
+      <div className={modalBtnWrapperClass}>
+        <Button
+          onClick={onConfirm}
+          buttonText="Patvirtinti"
+          className={acceptBtnClass}
+        />
+        <Button
+          onClick={onCancel}
+          buttonText="Atšaukti"
+          className={cancelBtnClass}
+        />
+      </div>
     </div>
   );
 };

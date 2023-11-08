@@ -1,27 +1,29 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "../Button/Button";
-// import { useState } from "react";
+import style from "./header.module.css";
 
 export const Header = () => {
-  // const [click, setClick] = useState(null);
-
   const handleLogout = () => {
     localStorage.removeItem("user");
     window.location.href = "http://localhost:3000/";
   };
 
   return (
-    <div className="header-wrapper">
-      <div className="navlinks">
-        <NavLink to="/">Home</NavLink>
+    <div className={style.headerWrapper}>
+      <div className={style.navlinks}>
         {!localStorage.getItem("user") && (
           <>
-            <NavLink to="/register">Register</NavLink>
-            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/">PAGRINDINIS</NavLink>
+            <NavLink to="/register">REGISTRUOTIS</NavLink>
+            <NavLink to="/login">PRISIJUNGTI</NavLink>
           </>
         )}
         {localStorage.getItem("user") && (
-          <Button onClick={handleLogout} buttonText="Atsijungti" />
+          <Button
+            onClick={handleLogout}
+            buttonText="Atsijungti"
+            className={style.logoutBtn}
+          />
         )}
       </div>
     </div>

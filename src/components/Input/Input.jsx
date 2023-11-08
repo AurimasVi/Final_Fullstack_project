@@ -12,6 +12,7 @@ export const Input = ({
       placeholder={placeHolder}
       className={className}
       onChange={onChange}
+      autoComplete="true"
     ></input>
   );
 };

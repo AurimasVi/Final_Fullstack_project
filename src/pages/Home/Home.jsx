@@ -9,6 +9,8 @@ import { Button } from "../../components/Button/Button";
 import Select from "react-select";
 import { Modal } from "../../components/Modal/Modal";
 import { ModalContent } from "../../components/ModalContent/ModalContent";
+import style from "./home.module.css";
+import { customStyles } from "./SelectStyles";
 
 export const Home = () => {
   // form
@@ -32,7 +34,6 @@ export const Home = () => {
       ...formData,
       date: date,
     });
-    console.log(formData);
   };
 
   const handleServiceChange = (selectedOption) => {
@@ -71,22 +72,19 @@ export const Home = () => {
         }
       );
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        alert("Klientas užregistruotas");
         window.location.href = "http://localhost:3000/";
       } else {
-        alert(
-          "Registracija nepavyko, įvesti netinkami vardas/pavardė prie kliento"
-        );
+        alert("Registracija nepavyko");
       }
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
 
   const options = [
     { value: "Plaukų kirpimas", label: "Plaukų kirpimas" },
-    { value: "Manikiūras", label: "Manikiūras" },
+    { value: "Vestuvinis paketas", label: "Vestuvinis paketas" },
     { value: "Barzdos tvarkymas", label: "Barzdos tvarkymas" },
   ];
 
@@ -103,12 +101,9 @@ export const Home = () => {
       if (response.ok && localStorage.getItem("user")) {
         const data = await response.json();
         setFetchedAppointments(data);
-      } else {
-        alert("Nepavyko gauti duomenu");
       }
     } catch (error) {
-      console.error(error);
-      alert("Nepavyko gauti duomenu");
+      alert(error);
     }
   };
 
@@ -149,14 +144,12 @@ export const Home = () => {
         }
       );
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
         fetchAppointments();
       } else {
-        console.error("Deletion failed");
+        alert("Deletion failed");
       }
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
 
     setShowModal(false);
@@ -180,70 +173,87 @@ export const Home = () => {
         }
       );
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
         fetchAppointments();
         setIsDatePickerVisible(false);
       } else {
-        console.error("Edit failed");
+        alert("Edit failed");
       }
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
 
   return (
     <>
-      <div>
-        <h1>Klientų registravimo sistema</h1>
+      <div className={style.bodyWrapper}>
+        <h1 className={style.h1Text}>KLIENTŲ REGISTRAVIMO SISTEMA</h1>
         {!localStorage.getItem("user") && (
           <>
-            <p>
+            <p className={style.descriptionToLogin}>
               Norint užregistruoti klientą jo grožio procedūroms, pirmiausia
               prisijunkite arba užsiregistruokite
             </p>
-            <NavLink to="/register">Register</NavLink>
-            <NavLink to="/login">Login</NavLink>
+            <div className={style.navLinksButtons}>
+              <NavLink to="/register">REGISTRUOTIS</NavLink>
+              <NavLink to="/login">PRISIJUNGTI</NavLink>
+            </div>
           </>
         )}
       </div>
       {localStorage.getItem("user") && (
-        <div className="clientRegistrationWrapper">
-          <p>Užregistruok klientą</p>
-          <Form onSubmit={handleSubmit}>
-            <Input
-              type="text"
-              inputName="firstName"
-              placeHolder="Vardas"
-              className="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-            />
-            <Input
-              type="text"
-              inputName="lastName"
-              placeHolder="Pavardė"
-              className="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-            />
-            <Input
-              type="email"
-              inputName="clientEmail"
-              placeHolder="El. Paštas"
-              className="clientEmail"
-              value={formData.clientEmail}
-              onChange={handleChange}
-            />
-            <Select
-              options={options}
-              value={formData.service}
-              onChange={(selectedOption) => handleServiceChange(selectedOption)}
-              placeholder={
-                formData.service ? formData.service : "Pasirinkite paslauga..."
-              }
-            />
+        <div className={style.clientRegistrationWrapper}>
+          <p className={style.sectionDescription}>UŽREGISTRUOK KLIENTĄ</p>
+          <Form
+            onSubmit={handleSubmit}
+            className={style.registrationFormWrapper}
+          >
+            <div className={style.inputWrapper}>
+              <Input
+                type="text"
+                inputName="firstName"
+                placeHolder="Vardas"
+                value={formData.firstName}
+                onChange={handleChange}
+                className={style.clientFirstNameInput}
+              />
+              <Input
+                type="text"
+                inputName="lastName"
+                placeHolder="Pavardė"
+                className={style.clientLastNameInput}
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+              <Input
+                type="email"
+                inputName="clientEmail"
+                placeHolder="El. Paštas"
+                className={style.clientEmailInput}
+                value={formData.clientEmail}
+                onChange={handleChange}
+              />
+              <Select
+                styles={customStyles}
+                options={options}
+                value={formData.service}
+                onChange={(selectedOption) =>
+                  handleServiceChange(selectedOption)
+                }
+                placeholder={
+                  formData.service
+                    ? formData.service
+                    : "Pasirinkite paslauga..."
+                }
+              />
+              <Button
+                buttonText="Užregistruoti klientą"
+                type="submit"
+                className={style.registerClientBtn}
+              />
+            </div>
+
             <DatePicker
+              className={style.datePicker}
               selected={formData.date}
               onChange={handleDateChange}
               inline
@@ -261,20 +271,19 @@ export const Home = () => {
               maxTime={setHours(setMinutes(new Date(), 30), 20)}
               filterTime={filterPassedTime}
             />
-            <Button buttonText="Užregistruoti klientą" type="submit" />
           </Form>
         </div>
       )}
       {localStorage.getItem("user") && (
         <div>
-          <p>Esamos registracijos</p>
+          <p className={style.sectionDescription}>ESAMOS REGISTRACIJOS</p>
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Email</th>
-                <th>Appointment</th>
+                <th className={style.tableHeadName}>VARDAS</th>
+                <th className={style.tableHeadSurname}>PAVARDĖ</th>
+                <th className={style.tableHeadEmail}>EL. PAŠTAS</th>
+                <th className={style.tableHeadAppointment}>VIZITAS</th>
               </tr>
             </thead>
             <tbody>
@@ -287,9 +296,14 @@ export const Home = () => {
                     <td>{client.clientEmail}</td>
                     <td>
                       {client.appointments.map((appointment) => (
-                        <div key={appointment._id} className="appointment-info">
-                          <span>{appointment.service}</span>
-                          <span>
+                        <div
+                          key={appointment._id}
+                          className={style.appointmentsWrapper}
+                        >
+                          <span className={style.appointmentService}>
+                            {appointment.service}
+                          </span>
+                          <span className={style.appointmentDate}>
                             {new Date(appointment.date).toLocaleString(
                               "lt-LT",
                               {
@@ -301,16 +315,18 @@ export const Home = () => {
                               }
                             )}
                           </span>
-                          <span>
+                          <span className={style.appointmentEditBtnWrapper}>
                             <Button
+                              className={style.editAppointmentBtn}
                               buttonText="Redaguoti"
                               onClick={() =>
                                 handleEditAppointment(appointment._id)
                               }
                             />
                           </span>
-                          <span>
+                          <span className={style.appointmentEditBtnWrapper}>
                             <Button
+                              className={style.deleteAppointmentBtn}
                               buttonText="Ištrinti"
                               onClick={() =>
                                 handleDeleteAppointment(
@@ -319,24 +335,28 @@ export const Home = () => {
                                 )
                               }
                             />
-                            {/* DELETEEEEE MODALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL */}
+                            {/* SHOWING MODAL AFTER PRESSING DELETE */}
                             {showModal && (
                               <Modal onClose={handleCloseModal}>
                                 <ModalContent
                                   onCancel={handleCloseModal}
                                   onConfirm={confirmDelete}
+                                  acceptBtnClass={style.modalAcceptBtn}
+                                  cancelBtnClass={style.modalCancelBtn}
+                                  modalBtnWrapperClass={style.modalBtnWrapper}
                                 >
-                                  <p>
-                                    Ar tikrai norite ištrinti šį kliento vizitą?
-                                  </p>
+                                  <h2 className={style.modalHeader}>
+                                    AR TIKRAI NORITE IŠTRINTI ŠĮ KLIENTO VIZITĄ?
+                                  </h2>
                                 </ModalContent>
                               </Modal>
                             )}
                           </span>
                           {selectedAppointment === appointment._id &&
                             isDatePickerVisible && (
-                              <div className="editModal">
+                              <div>
                                 <DatePicker
+                                  calendarClassName={style.editDatePicker}
                                   selected={editedDate}
                                   onChange={setEditedDate}
                                   inline
@@ -363,21 +383,25 @@ export const Home = () => {
                                   )}
                                   filterTime={filterPassedTime}
                                 />
-                                <Button
-                                  buttonText="Patvirtinti"
-                                  onClick={() =>
-                                    applyEditAppointment(
-                                      client._id,
-                                      appointment._id
-                                    )
-                                  }
-                                />
-                                <Button
-                                  buttonText="Atšaukti"
-                                  onClick={() =>
-                                    handleEditAppointment(appointment._id)
-                                  }
-                                />
+                                <div className={style.editBtnWrapper}>
+                                  <Button
+                                    className={style.editApplyBtn}
+                                    buttonText="Patvirtinti"
+                                    onClick={() =>
+                                      applyEditAppointment(
+                                        client._id,
+                                        appointment._id
+                                      )
+                                    }
+                                  />
+                                  <Button
+                                    className={style.editCancelBtn}
+                                    buttonText="Atšaukti"
+                                    onClick={() =>
+                                      handleEditAppointment(appointment._id)
+                                    }
+                                  />
+                                </div>
                               </div>
                             )}
                         </div>

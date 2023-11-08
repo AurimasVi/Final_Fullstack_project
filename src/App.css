@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Raleway", sans-serif;
+}
+
+p,
+h1,
+h2,
+button,
+td,
+th,
+a {
+  color: white;
+}
+
+.app {
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.744), rgba(0, 0, 0, 0.744)),
+    url("./assets//barbershop_background.jpg");
+  background-repeat: repeat-y;
+  background-size: cover;
+  background-position: center;
+}
+
+a {
+  text-decoration: none;
+}

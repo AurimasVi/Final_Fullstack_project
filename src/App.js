@@ -3,10 +3,11 @@ import { Home } from "./pages/Home/Home";
 import { Register } from "./pages/Register/Register";
 import { Header } from "./components/Header/Header";
 import { Login } from "./pages/Login/Login";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Header></Header>
       <Routes>
         <Route path="/" element={<Home />} />

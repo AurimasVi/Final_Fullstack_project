@@ -1,0 +1,106 @@
+.registrationPageMainWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+  width: 95vw;
+}
+
+.registrationFormWrapper {
+  width: 60%;
+  height: 70%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+
+.registrationForm {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.headerText {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  gap: 1rem;
+  margin-right: 2rem;
+}
+
+.firstNameInput,
+.lastNameInput,
+.emailInput,
+.passwordInput,
+.repeatPasswordInput {
+  border: none;
+  height: 3rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255);
+  font-size: 1.2rem;
+  padding-left: 1rem;
+  color: black;
+  width: 80%;
+}
+
+.registerBtn {
+  background-color: rgba(103, 60, 13, 0.797);
+  width: 12rem;
+  height: 3rem;
+  border: none;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.loginBtn {
+  background-color: rgba(103, 60, 13, 0.797);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.registerBtn:hover,
+.loginBtn:hover {
+  cursor: pointer;
+  background-color: rgba(97, 57, 13, 0.73);
+}
+
+.registerBtn:active,
+.loginBtn:active {
+  background-color: rgba(46, 11, 6, 0.797);
+}
+
+.subSectionWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.passwordError {
+  background-color: red;
+}

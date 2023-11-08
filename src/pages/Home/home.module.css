@@ -1,0 +1,212 @@
+.descriptionToLogin {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.h1Text {
+  font-size: 3.5rem;
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.bodyWrapper {
+  padding-top: 5rem;
+  padding-bottom: 1rem;
+}
+
+.registrationFormWrapper {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  gap: 1rem;
+  margin-right: 2rem;
+}
+
+.clientRegistrationWrapper {
+  width: 100%;
+
+  gap: 10rem;
+}
+table {
+  width: 100%;
+}
+.tableHeadName,
+.tableHeadSurname {
+  width: 15%;
+}
+
+thead {
+  height: 2rem;
+  background-color: rgb(0, 0, 0);
+}
+
+.appointmentsWrapper {
+  display: flex;
+}
+
+.appointmentService,
+.appointmentDate {
+  width: 25%;
+}
+
+.sectionDescription {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  padding-top: 0.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.549);
+}
+
+/* BUTTONS */
+.navLinksButtons {
+  display: flex;
+  margin-top: 5rem;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 1.2rem;
+}
+
+.navLinksButtons a,
+.registerClientBtn,
+.editAppointmentBtn,
+.editApplyBtn,
+.modalAcceptBtn {
+  background-color: rgba(103, 60, 13, 0.797);
+}
+
+.navLinksButtons a {
+  width: 12rem;
+  height: 3rem;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navLinksButtons a:hover,
+.registerClientBtn:hover,
+.editAppointmentBtn:hover,
+.editApplyBtn:hover,
+.modalAcceptBtn:hover {
+  cursor: pointer;
+  background-color: rgba(97, 57, 13, 0.73);
+}
+
+.navLinksButtons a:active,
+.registerClientBtn:active,
+.editAppointmentBtn:active,
+.editApplyBtn:active,
+.modalAcceptBtn:active {
+  cursor: pointer;
+  background-color: rgba(65, 38, 9, 0.73);
+}
+
+.registerClientBtn {
+  width: 12rem;
+  height: 3rem;
+  border: none;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.editAppointmentBtn,
+.editApplyBtn,
+.modalAcceptBtn {
+  width: 8rem;
+  height: 2rem;
+  border: none;
+  border-radius: 0.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+  margin-right: 1rem;
+}
+
+.deleteAppointmentBtn,
+.editCancelBtn,
+.modalCancelBtn {
+  background-color: rgba(103, 22, 13, 0.797);
+  width: 6rem;
+  height: 2rem;
+  border: none;
+  border-radius: 0.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+  margin-right: 1rem;
+}
+
+.deleteAppointmentBtn:hover,
+.editCancelBtn:hover,
+.modalCancelBtn:hover {
+  cursor: pointer;
+  background-color: rgba(71, 16, 9, 0.797);
+}
+
+.deleteAppointmentBtn:active,
+.editCancelBtn:active,
+.modalCancelBtn:active {
+  cursor: pointer;
+  background-color: rgba(46, 11, 6, 0.797);
+}
+
+.modalBtnWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 9rem;
+}
+
+.tableHeadEmail {
+  width: 25%;
+}
+
+.clientFirstNameInput,
+.clientLastNameInput,
+.clientEmailInput {
+  border: none;
+  height: 3rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255);
+  font-size: 1.2rem;
+  padding-left: 1rem;
+  color: black;
+}
+
+input:focus {
+  outline: 2px solid rgba(103, 60, 13, 0.797);
+  background-color: rgba(255, 219, 181, 0.86);
+}
+
+tr:nth-child(even) {
+  background-color: rgba(114, 92, 67, 0.4);
+}
+
+tr:nth-child(odd) {
+  background-color: rgba(161, 94, 22, 0.4);
+}
+
+.editBtnWrapper {
+  display: flex;
+  margin: 0.2rem;
+}
+
+.modalHeader {
+  font-size: 1.2rem;
+  font-weight: 400;
+}

@@ -1,0 +1,29 @@
+.headerWrapper {
+  height: 3rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navlinks {
+  display: flex;
+  gap: 2rem;
+  font-size: 1.2rem;
+}
+
+.logoutBtn {
+  background-color: rgba(103, 60, 13, 0.797);
+  width: 12rem;
+  height: 3rem;
+  border: none;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.logoutBtn:hover {
+  cursor: pointer;
+  background-color: rgba(97, 57, 13, 0.73);
+}
